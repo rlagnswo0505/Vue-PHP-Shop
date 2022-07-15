@@ -25,7 +25,7 @@ export default {
           const acc = res.kakao_account;
           const params = {
             email: acc.email,
-            nm: acc.profile.nickname,
+            nickname: acc.profile.nickname,
             profile_img: acc.profile.profile_image_url,
             thumb_img: acc.profile.thumbnail_image_url,
           };
