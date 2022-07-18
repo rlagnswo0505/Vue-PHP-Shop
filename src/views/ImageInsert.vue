@@ -66,8 +66,17 @@
                 </ul>
               </div>
             </div>
+            <div class="col-lg-6 col-md-8">
+              <div class="position-relative">
+                <img src="" class="img-fluid" alt="" />
+                <div class="position-absolute top-0 end-0" style="cursor: pointer">X</div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+      <div class="mb-3 row m-auto">
+        <button type="button" class="btn btn-lg btn-dark">확인</button>
       </div>
     </div>
   </main>

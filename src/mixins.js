@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default {
   methods: {
-    async $api(url, data) {
+    async $post(url, data) {
       return (
         await axios({
           method: 'post',
@@ -11,6 +11,18 @@ export default {
         }).catch((e) => {
           console.error(e);
         })
+      ).data;
+    },
+    // 꼭 params라는 객체를 만들어서 보내야함 axios 문법임
+    async $get(url, param) {
+      return (
+        await axios
+          .get(url, {
+            params: param,
+          })
+          .catch((e) => {
+            console.error(e);
+          })
       ).data;
     },
     $base64(file) {

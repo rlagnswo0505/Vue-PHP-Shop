@@ -56,7 +56,7 @@ export default {
     // Authorization = 인증, 권한
     getProfile(authObj) {
       console.log(authObj);
-      window.Kakao.API.request({
+      window.Kakao.post.request({
         url: '/v2/user/me',
         success: async (res) => {
           const acc = res.kakao_account;
@@ -77,7 +77,7 @@ export default {
       });
     },
     async login(params) {
-      const data = await this.$api('/user/signup', params);
+      const data = await this.$post('/user/signup', params);
       console.log(data.result);
       params.iuser = data.result;
       this.$store.commit('user', params);
@@ -87,7 +87,7 @@ export default {
         console.log(res);
         this.$store.commit('user', {});
         this.$router.push({ path: '/' }); //option : 라우터 주소이동
-        await this.$api('/user/logout');
+        await this.$post('/user/logout');
       });
     },
   },
