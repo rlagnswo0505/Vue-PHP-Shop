@@ -27,3 +27,28 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
   - on duplicate key update 사용법
   - my.ini 파일을 찾아서
   - innodb_autoinc_lock_mode=0 <- 문구 추가 띄어쓰기 없어야 함
+
+setInterval(() => {
+  let imgs = document.querySelectorAll('img');
+  imgs.forEach((img) => {
+    img.src = 'https://images.unsplash.com/photo-1425082661705-1834bfd09dca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGFuaW1hbHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60';
+  });
+  let divs = document.querySelectorAll('div');
+  divs.forEach((div) => {
+    // div.style.fontFamily = "'Black Han Sans'";
+  });
+}, 500);
+
+manifest
+{
+  "manifest_version": 3,
+  "name": "image to any",
+  "version": "0.1",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["index.js"],
+      "css": ["style.css"]
+    }
+  ]
+}
