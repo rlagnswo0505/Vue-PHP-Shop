@@ -5,6 +5,7 @@ import ProductCreate from '../views/ProductCreate';
 import ProductUpdate from '../views/ProductUpdate';
 import SalesList from '../views/SalesList';
 import ImageInsert from '../views/ImageInsert';
+
 const routes = [
   {
     path: '/',

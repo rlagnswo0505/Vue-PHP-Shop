@@ -6,7 +6,7 @@
       <div class="mb-3 row">
         <label class="col-md-3 col-form-label">제품명</label>
         <div class="col-md-9">
-          <input type="text" class="form-control" v-model="product.product_name" />
+          <input type="text" ref="product_name" class="form-control" v-model="product.product_name" />
         </div>
       </div>
 
@@ -14,7 +14,7 @@
         <label class="col-md-3 col-form-label">제품가격</label>
         <div class="col-md-9">
           <div class="input-group mb-3">
-            <input type="number" class="form-control" v-model="product.product_price" />
+            <input type="number" min="0" ref="product_price" class="form-control" v-model="product.product_price" />
             <span class="input-group-text">원</span>
           </div>
         </div>
@@ -24,7 +24,7 @@
         <label class="col-md-3 col-form-label">배송비</label>
         <div class="col-md-9">
           <div class="input-group mb-3">
-            <input type="number" class="form-control" v-model="product.delivery_price" />
+            <input type="number" min="0" ref="delivery_price" class="form-control" v-model="product.delivery_price" />
             <span class="input-group-text">원</span>
           </div>
         </div>
@@ -34,7 +34,7 @@
         <label class="col-md-3 col-form-label">추가배송비(도서산간)</label>
         <div class="col-md-9">
           <div class="input-group mb-3">
-            <input type="number" class="form-control" v-model="product.add_delivery_price" />
+            <input type="number" min="0" class="form-control" v-model="product.add_delivery_price" />
             <span class="input-group-text">원</span>
           </div>
         </div>
@@ -57,10 +57,11 @@
             </div>
 
             <div class="col-auto" v-if="cate2 !== ''">
-              <select class="form-select" v-model="cate3">
-                <option :key="idx" v-for="(cate, idx) in categoryObj[cate1][cate2]">{{ cate }}</option>
+              <select class="form-select" v-model="selectedCateId">
+                <option :value="cate.id" :key="cate.id" v-for="cate in categoryObj[cate1][cate2]">{{ cate.value }}</option>
               </select>
             </div>
+            {{ selectedCateId }}
           </div>
         </div>
       </div>
@@ -76,7 +77,7 @@
         <label class="col-md-3 col-form-label">출고일</label>
         <div class="col-md-9">
           <div class="input-group mb-3">
-            <input type="number" class="form-control" v-model="product.outbound_days" />
+            <input type="number" min="0" ref="outbound_days" class="form-control" v-model="product.outbound_days" />
             <span class="input-group-text">일 이내 출고</span>
           </div>
         </div>
@@ -111,7 +112,7 @@ export default {
       categoryObj: {},
       cate1: '',
       cate2: '',
-      cate3: '',
+      selectedCateId: '',
     };
   },
   created() {
@@ -134,8 +135,9 @@ export default {
           cate2 = item.cate2;
           this.categoryObj[cate1][cate2] = [];
         }
+
         const obj = {
-          if: item.id,
+          id: item.id,
           value: item.cate3,
         };
         this.categoryObj[cate1][cate2].push(obj);
@@ -143,10 +145,28 @@ export default {
     },
     changeCate1() {
       this.cate2 = '';
-      this.cate3 = '';
+      this.selectedCateId = '';
     },
     changeCate2() {
-      this.cate3 = '';
+      this.selectedCateId = '';
+    },
+    productInsert() {
+      if (this.product.product_name === '') {
+        this.$refs.product_name.focus();
+        return this.$swal('제품명은 필수 입력값입니다.');
+      }
+      if (this.product.product_price === '' || this.product.product_price === 0) {
+        this.$refs.product_price.focus();
+        return this.$swal('제품 가격을 입력하세요.');
+      }
+      if (this.product.delivery_price === '' || this.product.delivery_price === 0) {
+        this.$refs.delivery_price.focus();
+        return this.$swal('배송료를 입력하세요.');
+      }
+      if (this.product.outbound_days === '' || this.product.outbound_days === 0) {
+        this.$refs.outbound_days.focus();
+        return this.$swal('출고일을 입력하세요.');
+      }
     },
   },
 };
