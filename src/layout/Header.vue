@@ -69,16 +69,27 @@ export default {
             thumb_img: acc.profile.thumbnail_image_url,
           };
           console.log(params);
-          const data = await this.$api('/user/signup', params);
-          console.log(data.result);
-          this.$store.commit('setState', data.result);
+          this.login(params);
         },
         fail: (e) => {
           console.error(e);
         },
       });
     },
-    kakaoLogout() {},
+    async login(params) {
+      const data = await this.$api('/user/signup', params);
+      console.log(data.result);
+      params.iuser = data.result;
+      this.$store.commit('user', params);
+    },
+    kakaoLogout() {
+      window.Kakao.Auth.logout(async (res) => {
+        console.log(res);
+        this.$store.commit('user', {});
+        this.$router.push({ path: '/' }); //option : 라우터 주소이동
+        await this.$api('/user/logout');
+      });
+    },
   },
 };
 </script>
