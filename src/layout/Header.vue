@@ -1,10 +1,11 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a href="#" class="navbar-brand"> soldout </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand" href="#">Soldout</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false">
         <span class="navbar-toggler-icon"></span>
       </button>
+
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
@@ -26,8 +27,8 @@
             <button class="btn btn-danger" type="button" @click="kakaoLogout">로그아웃</button>
           </li>
         </ul>
-        <form action="" class="d-flex">
-          <input type="search" placeholder="Search" aria-label="Search" class="form-control me-2" />
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
           <button class="btn btn-outline-success text-white" type="submit" style="border-color: white">Search</button>
         </form>
       </div>
@@ -53,10 +54,9 @@ export default {
         },
       });
     },
-    // Authorization = 인증, 권한
     getProfile(authObj) {
       console.log(authObj);
-      window.Kakao.post.request({
+      window.Kakao.API.request({
         url: '/v2/user/me',
         success: async (res) => {
           const acc = res.kakao_account;
@@ -78,7 +78,6 @@ export default {
     },
     async login(params) {
       const data = await this.$post('/user/signup', params);
-      console.log(data.result);
       params.iuser = data.result;
       this.$store.commit('user', params);
     },
@@ -86,8 +85,8 @@ export default {
       window.Kakao.Auth.logout(async (res) => {
         console.log(res);
         this.$store.commit('user', {});
-        this.$router.push({ path: '/' }); //option : 라우터 주소이동
-        await this.$post('/user/logout');
+        this.$router.push({ path: '/' }); // router 주소 이동 (option)
+        await this.$api('/user/logout');
       });
     },
   },
