@@ -29,6 +29,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
   - innodb_autoinc_lock_mode=0 <- 문구 추가 띄어쓰기 없어야 함
 
 index.js
+
 setInterval(() => {
   let imgs = document.querySelectorAll('img');
   imgs.forEach((img) => {
@@ -37,6 +38,7 @@ setInterval(() => {
 }, 500);
 
 manifest
+
 {
   "manifest_version": 3,
   "name": "image to any",
@@ -48,3 +50,4 @@ manifest
     }
   ]
 }
+
