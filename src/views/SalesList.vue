@@ -16,7 +16,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr :key="product.id" v-for="product in productList">
+          <tr :key="product.id" v-for="(product, idx) in productList">
             <td>
               <!-- <img :src="`/download/${product.id}/${product.path}`" style="height: 50px; width: auto" /> -->
             </td>
@@ -25,7 +25,7 @@
             <td>{{ product.delivery_price }}</td>
             <td>{{ product.add_delivery_price }}</td>
             <td>
-              <button type="button" class="btn btn-info me-1" @click="goToImageInsert(product.id)">사진등록</button>
+              <button type="button" class="btn btn-info me-1" @click="goToImageInsert(idx)">사진등록</button>
               <button type="button" class="btn btn-warning me-1">수정</button>
               <button type="button" class="btn btn-danger" @click="delProduct(product.id)">삭제</button>
             </td>
@@ -61,8 +61,9 @@ export default {
     goToProductCreate() {
       this.$router.push({ path: '/create' });
     },
-    goToImageInsert(product_id) {
-      this.$router.push({ path: '/image_insert', query: { product_id: product_id } });
+    goToImageInsert(idx) {
+      this.$store.commit('sallerSelectedProduct', this.productList[idx]);
+      this.$router.push({ path: `/image_insert` });
     },
   },
 };

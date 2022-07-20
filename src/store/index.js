@@ -5,11 +5,15 @@ export default createStore({
   state() {
     return {
       user: {},
+      sallerSelectedProduct: {},
     };
   },
   mutations: {
     user: (state, data) => {
       state.user = data;
+    },
+    sallerSelectedProduct: (state, data) => {
+      state.sallerSelectedProduct = data;
     },
   },
   plugins: [
@@ -18,19 +22,3 @@ export default createStore({
     }),
   ],
 });
-
-/*import { createStore } from 'vuex'
-
-export default createStore({
-  state: {
-  },
-  getters: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
-})
-*/

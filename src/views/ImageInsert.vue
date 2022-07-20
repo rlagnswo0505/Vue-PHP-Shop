@@ -5,7 +5,7 @@
       <div class="mb-3 row">
         <label class="col-md-3 col-form-label">제품ID</label>
         <div class="col-md-9">
-          {{ productId }}
+          {{ productDetail.id }}
         </div>
       </div>
       <div class="mb-3 row">
@@ -20,7 +20,7 @@
           <div class="row">
             <div class="col-lg-3 col-md-4 col-sm-2" :key="i" v-for="(m, i) in productImage.filter((c) => c.type == 1)">
               <div class="position-relative">
-                <img :src="`/download/${productId}/${m.path}`" class="img-fluid" />
+                <img :src="`/download/${productDetail.id}/${m.path}`" class="img-fluid" />
                 <div class="position-absolute top-0 end-0" style="cursor: pointer" @click="deleteImage(m.id)">X</div>
               </div>
             </div>
@@ -41,7 +41,7 @@
           <div class="row">
             <div class="col-lg-3 col-md-4 col-sm-2" :key="i" v-for="(m, i) in productImage.filter((c) => c.type == 2)">
               <div class="position-relative">
-                <img :src="`/download/${productId}/${m.path}`" class="img-fluid" />
+                <img :src="`/download/${productDetail.id}/${m.path}`" class="img-fluid" />
                 <div class="position-absolute top-0 end-0" style="cursor: pointer" @click="deleteImage(m.id)">X</div>
               </div>
             </div>
@@ -72,7 +72,7 @@
             </div>
             <div class="col-lg-6 col-md-4" :key="i" v-for="(m, i) in productImage.filter((c) => c.type == 3)">
               <div class="position-relative">
-                <img :src="`/download/${productId}/${m.path}`" class="img-fluid" />
+                <img :src="`/download/${productDetail.id}/${m.path}`" class="img-fluid" />
                 <div class="position-absolute top-0 end-0" style="cursor: pointer; color: white" @click="deleteImage(m.id)">X</div>
               </div>
             </div>
@@ -98,12 +98,11 @@ export default {
   },
   created() {
     this.productId = this.$route.query.product_id;
-    this.getProductDetail();
+    this.productDetail = this.$store.state.sallerSelectedProduct;
   },
   methods: {
-    async getProductDetail() {
-      const productDetail = await this.getProductImage('/api/productDetail', { prodectId: this.prodectId });
-      console.log(productDetail);
+    goToList() {
+      this.$router.push({ path: '/sales' });
     },
   },
 };
