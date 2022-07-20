@@ -18,10 +18,10 @@
         <label class="col-md-3 col-form-label">썸네일이미지</label>
         <div class="col-md-9">
           <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-2" :key="i" v-for="(m, i) in productImage.filter((c) => c.type == 1)">
+            <div class="col-lg-3 col-md-4 col-sm-2" :key="idx" v-for="(item, idx) in productImage.filter((c) => c.type == 1)">
               <div class="position-relative">
-                <img :src="`/download/${productDetail.id}/${m.path}`" class="img-fluid" />
-                <div class="position-absolute top-0 end-0" style="cursor: pointer" @click="deleteImage(m.id)">X</div>
+                <img :src="`/static/img/${item.product_id}/${item.type}/${item.path}`" class="img-fluid" />
+                <div class="position-absolute top-0 end-0" style="cursor: pointer" @click="deleteImage(item)">X</div>
               </div>
             </div>
           </div>
@@ -39,10 +39,10 @@
         <label class="col-md-3 col-form-label">제품이미지</label>
         <div class="col-md-9">
           <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-2" :key="i" v-for="(m, i) in productImage.filter((c) => c.type == 2)">
+            <div class="col-lg-3 col-md-4 col-sm-2" :key="idx" v-for="(item, idx) in productImage.filter((c) => c.type == 2)">
               <div class="position-relative">
-                <img :src="`/download/${productDetail.id}/${m.path}`" class="img-fluid" />
-                <div class="position-absolute top-0 end-0" style="cursor: pointer" @click="deleteImage(m.id)">X</div>
+                <img :src="`/static/img/${item.product_id}/${item.type}/${item.path}`" class="img-fluid" />
+                <div class="position-absolute top-0 end-0" style="cursor: pointer" @click="deleteImage(item)">X</div>
               </div>
             </div>
           </div>
@@ -70,10 +70,10 @@
                 </ul>
               </div>
             </div>
-            <div class="col-lg-6 col-md-4" :key="i" v-for="(m, i) in productImage.filter((c) => c.type == 3)">
+            <div class="col-lg-6 col-md-4" :key="idx" v-for="(item, idx) in productImage.filter((c) => c.type == 3)">
               <div class="position-relative">
-                <img :src="`/download/${productDetail.id}/${m.path}`" class="img-fluid" />
-                <div class="position-absolute top-0 end-0" style="cursor: pointer; color: white" @click="deleteImage(m.id)">X</div>
+                <img :src="`/static/img/${item.product_id}/${item.type}/${item.path}`" class="img-fluid" />
+                <div class="position-absolute top-0 end-0" style="cursor: pointer" @click="deleteImage(item)">X</div>
               </div>
             </div>
           </div>
@@ -94,18 +94,23 @@ export default {
       productName: '',
       productDetail: {},
       productImage: [],
+      image_id: '',
     };
   },
   created() {
     this.productId = this.$route.query.product_id;
     this.productDetail = this.$store.state.sallerSelectedProduct;
+    this.getProductImage();
+  },
+  updated() {
+    this.getProductImage();
   },
   methods: {
     goToList() {
       this.$router.push({ path: '/sales' });
     },
     async getProductImage() {
-      this.productImage = await this.$get('/api/imageList', { productid: this.productDetail.id });
+      this.productImage = await this.$get(`/api/productImageList/${this.productDetail.id}`);
     },
     async uploadFile(files, type) {
       console.log(files);
@@ -124,9 +129,12 @@ export default {
       const { error } = await this.$post(`/api/upload/${this.productDetail.id}/${type}`, formData);
       console.log(error);
     },
-    upload() {},
+    async deleteImage({ id, product_id, type, path }) {
+      const result = await this.$delete(`/api/productImageDelete/${id}/${product_id}/${type}/${path}`);
+      console.log(result);
+    },
   },
 };
 </script>
 
-<style></style>
+<style scoped></style>
