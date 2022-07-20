@@ -46,7 +46,7 @@
               </div>
             </div>
           </div>
-          <input type="file" class="form-control" accept="image/png,image/jpeg" @change="uploadFile($event.target.files, 2)" />
+          <input type="file" multiple class="form-control" accept="image/png,image/jpeg" @change="uploadFile($event.target.files, 2)" />
           <div class="alert alert-secondary" role="alert">
             <ul>
               <li>최대 5개 가능</li>
@@ -80,7 +80,7 @@
         </div>
       </div>
       <div class="mb-3 row m-auto">
-        <button type="button" class="btn btn-lg btn-dark" @click="goToList">확인</button>
+        <button type="button" class="btn btn-lg btn-dark" @click="goToList, upload">확인</button>
       </div>
     </div>
   </main>
@@ -104,13 +104,27 @@ export default {
     goToList() {
       this.$router.push({ path: '/sales' });
     },
+    async getProductImage() {
+      this.productImage = await this.$get('/api/imageList', { productid: this.productDetail.id });
+    },
     async uploadFile(files, type) {
       console.log(files);
-      const image = await this.$base64(files[0]);
-      const formData = { image };
+
+      const images = [];
+      if (files.length <= 5) {
+        for (let i = 0; i < files.length; i++) {
+          images.push(await this.$base64(files[i]));
+        }
+      } else {
+        this.$swal.fire('5개를 초과하였습니다[최대 5개].', '', 'warning');
+      }
+      console.log(images);
+
+      const formData = { images };
       const { error } = await this.$post(`/api/upload/${this.productDetail.id}/${type}`, formData);
       console.log(error);
     },
+    upload() {},
   },
 };
 </script>
