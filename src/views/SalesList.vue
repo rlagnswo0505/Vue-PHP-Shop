@@ -53,10 +53,23 @@ export default {
       this.productList = productList2;
     },
     async delProduct(id) {
-      const result = await this.$post('/api/delProduct', {
-        id,
-      });
-      console.log(result);
+      this.$swal
+        .fire({
+          title: '정말 삭제하시겠습니까?',
+          showCancelButton: true,
+          confirmButtonText: '삭제',
+          cancelButtonText: '취소',
+        })
+        .then(async (result) => {
+          if (result.isConfirmed) {
+            const result = await this.$post('/api/delProduct', {
+              id,
+            });
+            console.log(result);
+            this.$swal.fire('삭제되었습니다.', '', 'success');
+            this.$router.push({ path: '/sales' });
+          }
+        });
     },
     goToProductCreate() {
       this.$router.push({ path: '/create' });
@@ -66,5 +79,6 @@ export default {
       this.$router.push({ path: `/image_insert` });
     },
   },
+  computed: {},
 };
 </script>

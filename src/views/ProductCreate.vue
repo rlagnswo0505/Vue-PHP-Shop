@@ -159,11 +159,6 @@ export default {
         return this.$swal('제품 가격을 입력하세요.');
       }
 
-      if (this.product.delivery_price === '' || this.product.delivery_price === 0) {
-        this.$refs.delivery_price.focus();
-        return this.$swal('배송료를 입력하세요.');
-      }
-
       if (this.product.category_id === '') {
         return this.$swal('카테고리를 선택해주세요.');
       }
