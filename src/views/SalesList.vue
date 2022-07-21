@@ -18,7 +18,7 @@
         <tbody>
           <tr :key="product.id" v-for="(product, idx) in productList">
             <td>
-              <!-- <img :src="`/download/${product.id}/${product.path}`" style="height: 50px; width: auto" /> -->
+              <img v-if="product.path !== null" :src="`/static/img/${product.id}/1/${product.path}`" style="height: 50px; width: auto" />
             </td>
             <td>{{ product.product_name }}</td>
             <td>{{ product.product_price }}</td>
@@ -27,7 +27,7 @@
             <td>
               <button type="button" class="btn btn-info me-1" @click="goToImageInsert(idx)">사진등록</button>
               <button type="button" class="btn btn-warning me-1">수정</button>
-              <button type="button" class="btn btn-danger" @click="delProduct(product.id)">삭제</button>
+              <button type="button" class="btn btn-danger" @click="deleteProduct(product.id)">삭제</button>
             </td>
           </tr>
         </tbody>
@@ -46,13 +46,16 @@ export default {
   created() {
     this.getProductList2();
   },
+  // updated() {
+  //   this.getProductList2();
+  // },
   methods: {
     async getProductList2() {
       const productList2 = await this.$get('/api/productList2', {});
       console.log(productList2);
       this.productList = productList2;
     },
-    async delProduct(id) {
+    async deleteProduct(id) {
       this.$swal
         .fire({
           title: '정말 삭제하시겠습니까?',
@@ -62,9 +65,7 @@ export default {
         })
         .then(async (result) => {
           if (result.isConfirmed) {
-            const result = await this.$post('/api/delProduct', {
-              id,
-            });
+            const result = await this.$post(`/api/deleteProduct/${id}`);
             console.log(result);
             this.$swal.fire('삭제되었습니다.', '', 'success');
             this.$router.push({ path: '/sales' });
@@ -82,3 +83,10 @@ export default {
   computed: {},
 };
 </script>
+
+<style>
+td {
+  height: 100%;
+  margin: auto;
+}
+</style>

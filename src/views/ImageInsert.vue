@@ -80,7 +80,7 @@
         </div>
       </div>
       <div class="mb-3 row m-auto">
-        <button type="button" class="btn btn-lg btn-dark" @click="goToList, upload">확인</button>
+        <button type="button" class="btn btn-lg btn-dark" @click="goToList">확인</button>
       </div>
     </div>
   </main>
