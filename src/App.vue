@@ -38,7 +38,7 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
-.content-center {
+.container-center {
   display: flex;
   justify-content: center;
   align-items: center;

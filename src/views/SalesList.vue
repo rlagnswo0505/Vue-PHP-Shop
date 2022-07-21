@@ -7,7 +7,7 @@
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th></th>
+            <th>&ensp;</th>
             <th>제품명</th>
             <th>제품가격</th>
             <th>배송비</th>
@@ -17,17 +17,19 @@
         </thead>
         <tbody>
           <tr :key="product.id" v-for="(product, idx) in productList">
-            <td>
-              <img v-if="product.path !== null" :src="`/static/img/${product.id}/1/${product.path}`" style="height: 50px; width: auto" />
+            <td style="position: absolute height: 300px width: 200px">
+              <div class="imgBox">
+                <img style="position: relative top:0 bottom: 0 left:0 right:0" v-if="product.path !== null" :src="`/static/img/${product.id}/1/${product.path}`" />
+              </div>
             </td>
-            <td>{{ product.product_name }}</td>
-            <td>{{ product.product_price }}</td>
-            <td>{{ product.delivery_price }}</td>
-            <td>{{ product.add_delivery_price }}</td>
-            <td>
+            <td class="td">{{ product.product_name }}</td>
+            <td class="td">{{ product.product_price }}</td>
+            <td class="td">{{ product.delivery_price }}</td>
+            <td class="td">{{ product.add_delivery_price }}</td>
+            <td class="td">
               <button type="button" class="btn btn-info me-1" @click="goToImageInsert(idx)">사진등록</button>
               <button type="button" class="btn btn-warning me-1">수정</button>
-              <button type="button" class="btn btn-danger" @click="deleteProduct(product.id)">삭제</button>
+              <button type="button" class="btn btn-danger" @click="deleteProduct(product.id, idx)">삭제</button>
             </td>
           </tr>
         </tbody>
@@ -46,16 +48,15 @@ export default {
   created() {
     this.getProductList2();
   },
-  // updated() {
-  //   this.getProductList2();
-  // },
+  updated() {
+    this.getProductList2();
+  },
   methods: {
     async getProductList2() {
       const productList2 = await this.$get('/api/productList2', {});
-      console.log(productList2);
       this.productList = productList2;
     },
-    async deleteProduct(id) {
+    async deleteProduct(id, idx) {
       this.$swal
         .fire({
           title: '정말 삭제하시겠습니까?',
@@ -65,10 +66,11 @@ export default {
         })
         .then(async (result) => {
           if (result.isConfirmed) {
-            const result = await this.$post(`/api/deleteProduct/${id}`);
-            console.log(result);
+            const result = await this.$delete(`/api/deleteProduct/${id}`);
+            if (result.result === 1) {
+              this.productList.splice(idx, 1);
+            }
             this.$swal.fire('삭제되었습니다.', '', 'success');
-            this.$router.push({ path: '/sales' });
           }
         });
     },
@@ -84,9 +86,18 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.imgBox {
+  padding: 25px 0;
+}
 td {
-  height: 100%;
-  margin: auto;
+  text-align: center;
+  vertical-align: middle;
+}
+img {
+  width: 200px;
+  height: 150px;
+  object-fit: cover;
+  vertical-align: middle;
 }
 </style>
